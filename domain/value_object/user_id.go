@@ -15,3 +15,10 @@ func NewUserID(userID string) *UserID {
 	}
 	return &UserID{userID: userID}
 }
+
+func (id *UserID) Equals(other *UserID) bool {
+	if other == nil {
+		return false
+	}
+	return id.userID == other.userID
+}

@@ -8,8 +8,8 @@ import (
 )
 
 func TestNewUser(t *testing.T) {
-	uid, _ := value_object.NewUserID("example1")
-	un, _ := value_object.NewUserName("trewanek")
+	uid := value_object.NewUserID("example1")
+	un := value_object.NewUserName("trewanek")
 	type args struct {
 		id   *value_object.UserID
 		name *value_object.UserName
@@ -53,7 +53,16 @@ func TestNewUser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewUser(tt.args.id, tt.args.name)
+			got, err := func() (got *User, err error) {
+				defer func() {
+					e := recover()
+					if e != nil {
+						got = nil
+						err = e.(error)
+					}
+				}()
+				return NewUser(tt.args.id, tt.args.name), nil
+			}()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewUser() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -90,7 +99,16 @@ func TestCreateUser(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := CreateUser(tt.args.name)
+			got, err := func() (got *User, err error) {
+				defer func() {
+					e := recover()
+					if e != nil {
+						got = nil
+						err = e.(error)
+					}
+				}()
+				return CreateUser(tt.args.name), nil
+			}()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CreateUser() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -103,10 +121,10 @@ func TestCreateUser(t *testing.T) {
 }
 
 func TestUser_ChangeName(t *testing.T) {
-	uid, _ := value_object.NewUserID("example1")
-	un, _ := value_object.NewUserName("trewanek")
+	uid := value_object.NewUserID("example1")
+	un := value_object.NewUserName("trewanek")
 	changedName := "changedName"
-	changedNameObj, _ := value_object.NewUserName(changedName)
+	changedNameObj := value_object.NewUserName(changedName)
 
 	type fields struct {
 		userID   *value_object.UserID
@@ -136,7 +154,17 @@ func TestUser_ChangeName(t *testing.T) {
 				userID:   tt.fields.userID,
 				userName: tt.fields.userName,
 			}
-			got, err := user.ChangeName(tt.args.name)
+
+			got, err := func() (got *User, err error) {
+				defer func() {
+					e := recover()
+					if e != nil {
+						got = nil
+						err = e.(error)
+					}
+				}()
+				return user.ChangeName(tt.args.name), nil
+			}()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("User.ChangeName() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -149,8 +177,8 @@ func TestUser_ChangeName(t *testing.T) {
 }
 
 func TestUser_Equals(t *testing.T) {
-	user1, _ := CreateUser("trewanek")
-	user2, _ := CreateUser("trewanek")
+	user1 := CreateUser("trewanek")
+	user2 := CreateUser("trewanek")
 	type fields struct {
 		user *User
 	}
