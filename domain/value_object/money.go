@@ -64,15 +64,6 @@ func (money *Money) Sub(arg *Money) (*Money, error) {
 	}, nil
 }
 
-func (money *Money) checkNil(arg *Money) error {
-	if arg == nil {
-		return derr.NewInValidArgumentErr(
-			fmt.Errorf("arg is required. arg is nil"),
-		)
-	}
-	return nil
-}
-
 func (money *Money) checkCurrency(arg *Money) error {
 	if money.currency != arg.currency {
 		return derr.NewInValidArgumentErr(
@@ -81,6 +72,15 @@ func (money *Money) checkCurrency(arg *Money) error {
 				money.currency,
 				arg.currency,
 			),
+		)
+	}
+	return nil
+}
+
+func (money *Money) checkNil(arg *Money) error {
+	if arg == nil {
+		return derr.NewInValidArgumentErr(
+			fmt.Errorf("arg is required. arg is nil"),
 		)
 	}
 	return nil

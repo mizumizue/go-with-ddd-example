@@ -144,46 +144,6 @@ func TestMoney_Sub(t *testing.T) {
 	}
 }
 
-func TestMoney_checkNil(t *testing.T) {
-	type fields struct {
-		amount   float64
-		currency string
-	}
-	type args struct {
-		arg *Money
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		wantErr bool
-	}{
-		{
-			"",
-			fields{100.0, "JPY"},
-			args{&Money{300.0, "JPY"}},
-			false,
-		},
-		{
-			"",
-			fields{100.0, "JPY"},
-			args{nil},
-			true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			money := &Money{
-				amount:   tt.fields.amount,
-				currency: tt.fields.currency,
-			}
-			if err := money.checkNil(tt.args.arg); (err != nil) != tt.wantErr {
-				t.Errorf("Money.checkNil() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
 func TestMoney_checkCurrency(t *testing.T) {
 	type fields struct {
 		amount   float64
