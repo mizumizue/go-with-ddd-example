@@ -6,10 +6,16 @@ import (
 	"testing"
 
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
+	service2 "github.com/trewanek/go-with-ddd-example/domain/service"
+	"github.com/trewanek/go-with-ddd-example/infrastructure/persistence/memory"
 )
 
 func TestCreateUser(t *testing.T) {
 	ctx := context.Background()
+	repository := memory.NewUserRepository(nil)
+	service := service2.NewUserService(repository)
+	usecase := NewCreateUser(service, repository)
+
 	type args struct {
 		name string
 	}
@@ -19,16 +25,11 @@ func TestCreateUser(t *testing.T) {
 		want    *entity.User
 		wantErr bool
 	}{
-		{
-			"",
-			args{"user1"},
-			nil,
-			true,
-		},
+		// TODO Add Test Cases
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := CreateUser(ctx, tt.args.name)
+			got, err := usecase.Execute(ctx, tt.args.name)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CreateUser() error = %v, wantErr %v", err, tt.wantErr)
 				return

@@ -11,19 +11,35 @@ import (
 	"github.com/trewanek/go-with-ddd-example/domain/value_object"
 )
 
-var userRepository repository.IUserRepository
+type CreateUser struct {
+	userService    *service.UserService
+	userRepository repository.IUserRepository
+}
 
-func CreateUser(ctx context.Context, name string) (*entity.User, error) {
+func NewCreateUser(
+	userService *service.UserService,
+	userRepository repository.IUserRepository,
+) *CreateUser {
+	return &CreateUser{
+		userService:    userService,
+		userRepository: userRepository,
+	}
+}
+
+func (u *CreateUser) Execute(ctx context.Context, name string) (*entity.User, error) {
 	user := entity.NewUser(value_object.NewUserName(name))
 
-	userService := service.NewUserService()
-	if userService.Exists(user) {
-		return nil, aerr.NewResorseDuplicateErr(fmt.Errorf("user is duplicated. user: %v", user))
+	exists, err := u.userService.Exists(ctx, user)
+	if err != nil {
+		return nil, aerr.NewDatabaseErr(fmt.Errorf("user exixts check failed. user: %v", user))
+	}
+	if exists {
+		return nil, aerr.NewResourceDuplicateErr(fmt.Errorf("user is duplicated. user: %v", user))
 	}
 
-	inserted, err := userRepository.Insert(ctx, user)
+	inserted, err := u.userRepository.Insert(ctx, user)
 	if err != nil {
-		return nil, err
+		return nil, aerr.NewDatabaseErr(fmt.Errorf("user insert is failed. user: %v", user))
 	}
 
 	return inserted, nil

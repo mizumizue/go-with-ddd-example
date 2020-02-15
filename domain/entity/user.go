@@ -24,3 +24,7 @@ func (user *User) Equals(other *User) bool {
 	}
 	return user.userID.Equals(other.userID)
 }
+
+func (user *User) UserID() *value_object.UserID {
+	return user.userID
+}

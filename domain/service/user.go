@@ -1,30 +1,30 @@
 package service
 
 import (
+	"context"
+	"errors"
+
+	"github.com/trewanek/go-with-ddd-example/application/adapter/repository"
+	"github.com/trewanek/go-with-ddd-example/application/aerr"
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
 )
 
-type UserService struct{}
-
-func NewUserService() *UserService {
-	return &UserService{}
+type UserService struct {
+	userRepository repository.IUserRepository
 }
 
-func (service *UserService) Exists(user *entity.User) bool {
-	// TODO 永続化層にアクセスして確認する
-	for _, listUser := range inMemoryList {
-		if user.Equals(listUser) {
-			return true
-		}
+func NewUserService(userRepository repository.IUserRepository) *UserService {
+	return &UserService{
+		userRepository: userRepository,
 	}
-	return false
 }
 
-var (
-	un1 = value_object.NewUserName("user1")
-)
-
-var inMemoryList = []*entity.User{
-	entity.NewUser(un1),
+func (service *UserService) Exists(ctx context.Context, user *entity.User) (bool, error) {
+	if _, err := service.userRepository.Find(ctx, user.UserID()); err != nil {
+		if errors.As(err, &aerr.ResourceNotFoundErr{}) {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
 }
