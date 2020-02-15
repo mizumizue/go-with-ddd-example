@@ -3,7 +3,6 @@ package entity
 import (
 	"fmt"
 
-	"github.com/google/uuid"
 	"github.com/trewanek/go-with-ddd-example/domain/derr"
 	"github.com/trewanek/go-with-ddd-example/domain/value_object"
 )
@@ -21,12 +20,6 @@ func NewUser(id *value_object.UserID, name *value_object.UserName) *User {
 		panic(derr.NewInValidArgumentErr(fmt.Errorf("name is nil")))
 	}
 	return &User{userID: id, userName: name}
-}
-
-func CreateUser(name string) *User {
-	uid := value_object.NewUserID(uuid.New().String())
-	un := value_object.NewUserName(name)
-	return NewUser(uid, un)
 }
 
 func (user *User) ChangeName(name string) *User {

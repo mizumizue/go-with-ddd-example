@@ -74,52 +74,6 @@ func TestNewUser(t *testing.T) {
 	}
 }
 
-func TestCreateUser(t *testing.T) {
-	type args struct {
-		name string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		want    *User
-		wantErr bool
-	}{
-		{
-			"",
-			args{},
-			nil,
-			true,
-		},
-		{
-			"",
-			args{""},
-			nil,
-			true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := func() (got *User, err error) {
-				defer func() {
-					e := recover()
-					if e != nil {
-						got = nil
-						err = e.(error)
-					}
-				}()
-				return CreateUser(tt.args.name), nil
-			}()
-			if (err != nil) != tt.wantErr {
-				t.Errorf("CreateUser() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("CreateUser() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
 func TestUser_ChangeName(t *testing.T) {
 	uid := value_object.NewUserID("example1")
 	un := value_object.NewUserName("trewanek")
@@ -177,8 +131,8 @@ func TestUser_ChangeName(t *testing.T) {
 }
 
 func TestUser_Equals(t *testing.T) {
-	user1 := CreateUser("trewanek")
-	user2 := CreateUser("trewanek")
+	user1 := NewUser(value_object.NewUserID("user1"), value_object.NewUserName("trewanek"))
+	user2 := NewUser(value_object.NewUserID("user2"), value_object.NewUserName("trewanek"))
 	type fields struct {
 		user *User
 	}
