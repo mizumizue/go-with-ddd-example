@@ -10,7 +10,7 @@ func NewUserName(userName string) (*UserName, error) {
 	if userName == "" {
 		return nil, fmt.Errorf("userName is required")
 	}
-	if len(userName) < 3 {
+	if len([]rune(userName)) < 3 {
 		return nil, fmt.Errorf("userName is 3 char length required. value: %v", userName)
 	}
 	return &UserName{userName: userName}, nil
