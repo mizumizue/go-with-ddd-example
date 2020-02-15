@@ -11,17 +11,17 @@ type ModelNumber struct {
 	lot         string
 }
 
-func NewModelNumber(productCode string, branch string, lot string) (*ModelNumber, error) {
+func NewModelNumber(productCode string, branch string, lot string) *ModelNumber {
 	if productCode == "" {
-		return nil, derr.NewInValidArgumentErr(fmt.Errorf("productCode is required"))
+		panic(derr.NewInValidArgumentErr(fmt.Errorf("productCode is required")))
 	}
 	if branch == "" {
-		return nil, derr.NewInValidArgumentErr(fmt.Errorf("productCode is required"))
+		panic(derr.NewInValidArgumentErr(fmt.Errorf("productCode is required")))
 	}
 	if lot == "" {
-		return nil, derr.NewInValidArgumentErr(fmt.Errorf("productCode is required"))
+		panic(derr.NewInValidArgumentErr(fmt.Errorf("productCode is required")))
 	}
-	return &ModelNumber{productCode: productCode, branch: branch, lot: lot}, nil
+	return &ModelNumber{productCode: productCode, branch: branch, lot: lot}
 }
 
 func (modelNumber *ModelNumber) ModelNumber() string {

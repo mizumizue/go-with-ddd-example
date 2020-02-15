@@ -24,7 +24,16 @@ func TestNewModelNumber(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewModelNumber(tt.args.productCode, tt.args.branch, tt.args.lot)
+			got, err := func() (got *ModelNumber, err error) {
+				defer func() {
+					e := recover()
+					if e != nil {
+						got = nil
+						err = e.(error)
+					}
+				}()
+				return NewModelNumber(tt.args.productCode, tt.args.branch, tt.args.lot), nil
+			}()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewModelNumber() error = %v, wantErr %v", err, tt.wantErr)
 				return

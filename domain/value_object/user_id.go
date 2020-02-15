@@ -1,14 +1,17 @@
 package value_object
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/trewanek/go-with-ddd-example/domain/derr"
+)
 
 type UserID struct {
 	userID string
 }
 
-func NewUserID(userID string) (*UserID, error) {
+func NewUserID(userID string) *UserID {
 	if userID == "" {
-		return nil, fmt.Errorf("userID is required")
+		panic(derr.NewInValidArgumentErr(fmt.Errorf("userID is required")))
 	}
-	return &UserID{userID: userID}, nil
+	return &UserID{userID: userID}
 }

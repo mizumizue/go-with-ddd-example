@@ -10,23 +10,19 @@ type Money struct {
 	currency string
 }
 
-func NewMoney(amount float64, currency string) (*Money, error) {
+func NewMoney(amount float64, currency string) *Money {
 	if amount < 0.0 {
-		return nil, derr.NewInValidArgumentErr(
-			fmt.Errorf("amount should be positive value. value: %f", amount),
-		)
+		panic(derr.NewInValidArgumentErr(fmt.Errorf("amount should be positive value. value: %f", amount)))
 	}
 
 	if currency == "" {
-		return nil, derr.NewInValidArgumentErr(
-			fmt.Errorf("currency is required"),
-		)
+		panic(derr.NewInValidArgumentErr(fmt.Errorf("currency is required")))
 	}
 
 	return &Money{
 		amount:   amount,
 		currency: currency,
-	}, nil
+	}
 }
 
 func (money *Money) Add(arg *Money) (*Money, error) {

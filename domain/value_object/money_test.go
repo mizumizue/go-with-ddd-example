@@ -22,7 +22,20 @@ func TestNewMoney(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := NewMoney(tt.args.amount, tt.args.currency)
+			got, err := func() (got *Money, err error) {
+				defer func() {
+					e := recover()
+					if e != nil {
+						got = nil
+						err = e.(error)
+					}
+				}()
+				return NewMoney(tt.args.amount, tt.args.currency), nil
+			}()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("NewModelNumber() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
 			if (err != nil) != tt.wantErr {
 				t.Errorf("NewMoney() error = %v, wantErr %v", err, tt.wantErr)
 				return
