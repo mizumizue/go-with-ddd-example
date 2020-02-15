@@ -25,6 +25,10 @@ func TestNewUserService(t *testing.T) {
 }
 
 func TestUserService_Exists(t *testing.T) {
+	user1 := entity.NewUser(value_object.NewUserName("user1"))
+	user2 := entity.NewUser(value_object.NewUserName("user2"))
+	inMemoryList = append(inMemoryList, user1)
+
 	type args struct {
 		user *entity.User
 	}
@@ -37,19 +41,13 @@ func TestUserService_Exists(t *testing.T) {
 		{
 			"",
 			NewUserService(),
-			args{entity.NewUser(
-				value_object.NewUserID("1"),
-				value_object.NewUserName("user1"),
-			)},
+			args{user1},
 			true,
 		},
 		{
 			"",
 			NewUserService(),
-			args{entity.NewUser(
-				value_object.NewUserID("2"),
-				value_object.NewUserName("user2"),
-			)},
+			args{user2},
 			false,
 		},
 	}

@@ -1,9 +1,7 @@
 package entity
 
 import (
-	"fmt"
-
-	"github.com/trewanek/go-with-ddd-example/domain/derr"
+	"github.com/google/uuid"
 	"github.com/trewanek/go-with-ddd-example/domain/value_object"
 )
 
@@ -12,19 +10,12 @@ type User struct {
 	userName *value_object.UserName
 }
 
-func NewUser(id *value_object.UserID, name *value_object.UserName) *User {
-	if id == nil {
-		panic(derr.NewInValidArgumentErr(fmt.Errorf("id is nil")))
-	}
-	if name == nil {
-		panic(derr.NewInValidArgumentErr(fmt.Errorf("name is nil")))
-	}
-	return &User{userID: id, userName: name}
+func NewUser(userName *value_object.UserName) *User {
+	return &User{userID: value_object.NewUserID(uuid.New().String()), userName: userName}
 }
 
-func (user *User) ChangeName(name string) *User {
-	un := value_object.NewUserName(name)
-	return NewUser(user.userID, un)
+func (user *User) ChangeName(newName *value_object.UserName) *User {
+	return &User{userID: user.userID, userName: newName}
 }
 
 func (user *User) Equals(other *User) bool {

@@ -22,10 +22,9 @@ func (service *UserService) Exists(user *entity.User) bool {
 }
 
 var (
-	uid1 = value_object.NewUserID("1")
-	un1  = value_object.NewUserName("user1")
+	un1 = value_object.NewUserName("user1")
 )
 
 var inMemoryList = []*entity.User{
-	entity.NewUser(uid1, un1),
+	entity.NewUser(un1),
 }

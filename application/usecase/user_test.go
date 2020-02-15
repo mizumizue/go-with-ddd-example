@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"reflect"
 	"testing"
 
@@ -8,6 +9,7 @@ import (
 )
 
 func TestCreateUser(t *testing.T) {
+	ctx := context.Background()
 	type args struct {
 		name string
 	}
@@ -19,29 +21,14 @@ func TestCreateUser(t *testing.T) {
 	}{
 		{
 			"",
-			args{},
-			nil,
-			true,
-		},
-		{
-			"",
-			args{""},
+			args{"user1"},
 			nil,
 			true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := func() (got *entity.User, err error) {
-				defer func() {
-					e := recover()
-					if e != nil {
-						got = nil
-						err = e.(error)
-					}
-				}()
-				return CreateUser(tt.args.name), nil
-			}()
+			got, err := CreateUser(ctx, tt.args.name)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("CreateUser() error = %v, wantErr %v", err, tt.wantErr)
 				return
