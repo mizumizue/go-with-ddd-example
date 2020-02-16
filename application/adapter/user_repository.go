@@ -1,7 +1,8 @@
-package repository
+package adapter
 
 import (
 	"context"
+
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
 	"github.com/trewanek/go-with-ddd-example/domain/value_object"
 )

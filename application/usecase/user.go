@@ -4,29 +4,28 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/trewanek/go-with-ddd-example/application/adapter/repository"
+	"github.com/trewanek/go-with-ddd-example/application/adapter"
 	"github.com/trewanek/go-with-ddd-example/application/aerr"
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
-	"github.com/trewanek/go-with-ddd-example/domain/service"
 	"github.com/trewanek/go-with-ddd-example/domain/value_object"
 )
 
-type CreateUser struct {
-	userService    *service.UserService
-	userRepository repository.IUserRepository
+type UserRegisterUseCase struct {
+	userService    adapter.IUserService
+	userRepository adapter.IUserRepository
 }
 
-func NewCreateUser(
-	userService *service.UserService,
-	userRepository repository.IUserRepository,
-) *CreateUser {
-	return &CreateUser{
+func NewUserRegisterUseCase(
+	userService adapter.IUserService,
+	userRepository adapter.IUserRepository,
+) *UserRegisterUseCase {
+	return &UserRegisterUseCase{
 		userService:    userService,
 		userRepository: userRepository,
 	}
 }
 
-func (u *CreateUser) Execute(ctx context.Context, name string) (*entity.User, error) {
+func (u *UserRegisterUseCase) Execute(ctx context.Context, name string) (*entity.User, error) {
 	user := entity.NewUser(value_object.NewUserName(name))
 
 	exists, err := u.userService.Exists(ctx, user)
