@@ -8,8 +8,9 @@ import (
 )
 
 type IUserRepository interface {
-	Find(ctx context.Context, userID *value_object.UserID) (*entity.User, error)
-	Insert(ctx context.Context, user *entity.User) (*entity.User, error)
-	Update(ctx context.Context, user *entity.User) (*entity.User, error)
-	Delete(ctx context.Context, userID *value_object.UserID) error
+	FindAll(ctx context.Context) ([]*entity.User, error)
+	Find(ctx context.Context, userID value_object.UserID) (*entity.User, error)
+	Insert(ctx context.Context, user *entity.User) error
+	Update(ctx context.Context, user *entity.User) error
+	Delete(ctx context.Context, userID value_object.UserID) error
 }

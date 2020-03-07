@@ -7,14 +7,16 @@ import (
 
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
 	service2 "github.com/trewanek/go-with-ddd-example/domain/service"
+	memory2 "github.com/trewanek/go-with-ddd-example/infrastructure/factory/memory"
 	"github.com/trewanek/go-with-ddd-example/infrastructure/persistence/memory"
 )
 
 func TestCreateUser(t *testing.T) {
 	ctx := context.Background()
-	repository := memory.NewUserRepository(nil)
+	factory := memory2.NewInMemoryUserFactory()
+	repository := memory.NewInMemoryUserRepository()
 	service := service2.NewUserService(repository)
-	usecase := NewUserRegisterUseCase(service, repository)
+	usecase := NewUserRegisterUseCase(factory, service, repository)
 
 	type args struct {
 		name string

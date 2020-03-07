@@ -11,35 +11,38 @@ import (
 )
 
 type UserRegisterUseCase struct {
+	userFactory    entity.IUserFactory
 	userService    adapter.IUserService
 	userRepository adapter.IUserRepository
 }
 
 func NewUserRegisterUseCase(
+	userFactory entity.IUserFactory,
 	userService adapter.IUserService,
 	userRepository adapter.IUserRepository,
 ) *UserRegisterUseCase {
 	return &UserRegisterUseCase{
+		userFactory:    userFactory,
 		userService:    userService,
 		userRepository: userRepository,
 	}
 }
 
 func (u *UserRegisterUseCase) Execute(ctx context.Context, name string) (*entity.User, error) {
-	user := entity.NewUser(value_object.NewUserName(name))
+	user := u.userFactory.Create(value_object.NewUserName(name))
 
 	exists, err := u.userService.Exists(ctx, user)
 	if err != nil {
-		return nil, aerr.NewDatabaseErr(fmt.Errorf("user exixts check failed. user: %v", user))
+		return nil, fmt.Errorf("user exixts check failed. user: %+v", user)
 	}
 	if exists {
-		return nil, aerr.NewResourceDuplicateErr(fmt.Errorf("user is duplicated. user: %v", user))
+		return nil, aerr.NewResourceDuplicateErr(fmt.Errorf("user is duplicated. user: %+v", user))
 	}
 
-	inserted, err := u.userRepository.Insert(ctx, user)
+	err = u.userRepository.Insert(ctx, user)
 	if err != nil {
-		return nil, aerr.NewDatabaseErr(fmt.Errorf("user insert is failed. user: %v", user))
+		return nil, fmt.Errorf("user insert is failed. user: %+v", user)
 	}
 
-	return inserted, nil
+	return u.userRepository.Find(ctx, user.UserID())
 }
