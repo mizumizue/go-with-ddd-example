@@ -11,7 +11,7 @@ import (
 	memory "github.com/trewanek/go-with-ddd-example/infrastructure/persistence/memory"
 )
 
-func InitializeUserRegisterUseCase() *usecase.UserRegisterUseCase {
+func InitializeUserRegisterUseCase() *usecase.RegisterUserUseCase {
 	wire.Build(
 		usecase.NewUserRegisterUseCase,
 		service.NewUserService,

@@ -27,7 +27,7 @@ func (repo *InMemoryUserRepository) FindAll(ctx context.Context) ([]*entity.User
 }
 
 func (repo *InMemoryUserRepository) Find(ctx context.Context, userID value_object.UserID) (*entity.User, error) {
-	found := store[userID.String()]
+	found := store[userID.Value()]
 	if found == nil {
 		return nil, aerr.NewResourceNotFoundErr(fmt.Errorf("user not found. userID: %v", userID))
 	}
@@ -35,24 +35,24 @@ func (repo *InMemoryUserRepository) Find(ctx context.Context, userID value_objec
 }
 
 func (repo *InMemoryUserRepository) Insert(ctx context.Context, user *entity.User) error {
-	store[user.UserID().String()] = user
+	store[user.UserID().Value()] = user
 	return nil
 }
 
 func (repo *InMemoryUserRepository) Update(ctx context.Context, user *entity.User) error {
-	found := store[user.UserID().String()]
+	found := store[user.UserID().Value()]
 	if found == nil {
 		return aerr.NewResourceNotFoundErr(fmt.Errorf("user not found. user: %v", user))
 	}
-	store[user.UserID().String()] = user
+	store[user.UserID().Value()] = user
 	return nil
 }
 
 func (repo *InMemoryUserRepository) Delete(ctx context.Context, userID value_object.UserID) error {
-	found := store[userID.String()]
+	found := store[userID.Value()]
 	if found == nil {
 		return aerr.NewResourceNotFoundErr(fmt.Errorf("user not found. userID: %v", userID))
 	}
-	delete(store, userID.String())
+	delete(store, userID.Value())
 	return nil
 }

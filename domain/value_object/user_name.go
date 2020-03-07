@@ -20,3 +20,7 @@ func NewUserName(userName string) UserName {
 	}
 	return UserName{userName: userName}
 }
+
+func (userName *UserName) Value() string {
+	return userName.userName
+}

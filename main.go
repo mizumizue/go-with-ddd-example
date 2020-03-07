@@ -4,6 +4,8 @@ import (
 	"context"
 	"log"
 
+	"github.com/trewanek/go-with-ddd-example/interface/presenter"
+
 	"github.com/trewanek/go-with-ddd-example/application/usecase"
 	"github.com/trewanek/go-with-ddd-example/domain/service"
 
@@ -17,27 +19,16 @@ func main() {
 	userRepository := memory.NewInMemoryUserRepository()
 	userFactory := memory2.NewInMemoryUserFactory()
 	userService := service.NewUserService(userRepository)
-	use := usecase.NewUserRegisterUseCase(userFactory, userService, userRepository)
-	_, err := use.Execute(ctx, "trewanek1")
+	userPresenter := presenter.NewUserStdinPresenter()
+	use := usecase.NewUserRegisterUseCase(userFactory, userService, userRepository, userPresenter)
+
+	err := use.Execute(ctx, "trewanek")
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	_, err = use.Execute(ctx, "trewanek2")
+	err = use.Execute(ctx, "trewanek")
 	if err != nil {
 		log.Fatalln(err)
-	}
-
-	_, err = use.Execute(ctx, "trewanek3")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	users, err := userRepository.FindAll(ctx)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	for _, v := range users {
-		log.Printf("%++v", v)
 	}
 }

@@ -13,6 +13,16 @@ type User struct {
 	userName value_object.UserName
 }
 
+type IUserDto interface {
+	SetUserID(userID string)
+	SetUserName(userName string)
+}
+
+func (user *User) SetData(dst IUserDto) {
+	dst.SetUserID(user.userID.Value())
+	dst.SetUserName(user.userName.Value())
+}
+
 func NewUser(userID value_object.UserID, userName value_object.UserName) *User {
 	return &User{userID: userID, userName: userName}
 }

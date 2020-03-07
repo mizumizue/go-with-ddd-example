@@ -15,7 +15,7 @@ import (
 
 // Injectors from wire.go:
 
-func InitializeUserRegisterUseCase() *usecase.UserRegisterUseCase {
+func InitializeUserRegisterUseCase() *usecase.RegisterUserUseCase {
 	iUserFactory := memory.NewInMemoryUserFactory()
 	iUserRepository := memory2.NewInMemoryUserRepository()
 	iUserService := service.NewUserService(iUserRepository)

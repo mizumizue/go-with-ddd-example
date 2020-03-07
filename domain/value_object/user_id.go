@@ -17,7 +17,7 @@ func NewUserID(userID string) UserID {
 	return UserID{userID: userID}
 }
 
-func (id UserID) String() string {
+func (id UserID) Value() string {
 	return id.userID
 }
 
