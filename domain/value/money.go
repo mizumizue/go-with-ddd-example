@@ -1,7 +1,8 @@
-package value_object
+package value
 
 import (
 	"fmt"
+
 	"github.com/trewanek/go-with-ddd-example/domain/derr"
 )
 

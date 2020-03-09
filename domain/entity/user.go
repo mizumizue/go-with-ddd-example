@@ -1,16 +1,16 @@
 package entity
 
 import (
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
+	"github.com/trewanek/go-with-ddd-example/domain/value"
 )
 
 type IUserFactory interface {
-	Create(name value_object.UserName) *User
+	Create(name value.UserName) *User
 }
 
 type User struct {
-	userID   value_object.UserID
-	userName value_object.UserName
+	userID   value.UserID
+	userName value.UserName
 }
 
 type IUserDto interface {
@@ -23,11 +23,11 @@ func (user *User) SetData(dst IUserDto) {
 	dst.SetUserName(user.userName.Value())
 }
 
-func NewUser(userID value_object.UserID, userName value_object.UserName) *User {
+func NewUser(userID value.UserID, userName value.UserName) *User {
 	return &User{userID: userID, userName: userName}
 }
 
-func (user *User) ChangeName(newName value_object.UserName) *User {
+func (user *User) ChangeName(newName value.UserName) *User {
 	return &User{userID: user.userID, userName: newName}
 }
 
@@ -38,6 +38,6 @@ func (user *User) Equals(other *User) bool {
 	return user.userID.Equals(other.userID)
 }
 
-func (user *User) UserID() value_object.UserID {
+func (user *User) UserID() value.UserID {
 	return user.userID
 }

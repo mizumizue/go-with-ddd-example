@@ -1,4 +1,4 @@
-package value_object
+package value
 
 import (
 	"reflect"
@@ -14,7 +14,7 @@ func TestNewUserID(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *UserID
+		want    UserID
 		wantErr bool
 	}{
 		{
@@ -23,20 +23,13 @@ func TestNewUserID(t *testing.T) {
 			uid,
 			false,
 		},
-		{
-			"Empty",
-			args{""},
-			nil,
-			true,
-		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := func() (got *UserID, err error) {
+			got, err := func() (got UserID, err error) {
 				defer func() {
 					e := recover()
 					if e != nil {
-						got = nil
 						err = e.(error)
 					}
 				}()

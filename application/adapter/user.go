@@ -4,9 +4,8 @@ import (
 	"context"
 
 	"github.com/trewanek/go-with-ddd-example/application/response"
-
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
+	"github.com/trewanek/go-with-ddd-example/domain/value"
 )
 
 type IUserPresenter interface {
@@ -23,8 +22,8 @@ type IUserService interface {
 
 type IUserRepository interface {
 	FindAll(ctx context.Context) ([]*entity.User, error)
-	Find(ctx context.Context, userID value_object.UserID) (*entity.User, error)
+	Find(ctx context.Context, userID value.UserID) (*entity.User, error)
 	Insert(ctx context.Context, user *entity.User) error
 	Update(ctx context.Context, user *entity.User) error
-	Delete(ctx context.Context, userID value_object.UserID) error
+	Delete(ctx context.Context, userID value.UserID) error
 }

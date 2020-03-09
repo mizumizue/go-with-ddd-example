@@ -7,7 +7,7 @@ import (
 	"github.com/trewanek/go-with-ddd-example/application/adapter"
 	"github.com/trewanek/go-with-ddd-example/application/aerr"
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
+	"github.com/trewanek/go-with-ddd-example/domain/value"
 )
 
 var store = map[string]*entity.User{}
@@ -26,7 +26,7 @@ func (repo *InMemoryUserRepository) FindAll(ctx context.Context) ([]*entity.User
 	return res, nil
 }
 
-func (repo *InMemoryUserRepository) Find(ctx context.Context, userID value_object.UserID) (*entity.User, error) {
+func (repo *InMemoryUserRepository) Find(ctx context.Context, userID value.UserID) (*entity.User, error) {
 	found := store[userID.Value()]
 	if found == nil {
 		return nil, aerr.NewResourceNotFoundErr(fmt.Errorf("user not found. userID: %v", userID))
@@ -48,7 +48,7 @@ func (repo *InMemoryUserRepository) Update(ctx context.Context, user *entity.Use
 	return nil
 }
 
-func (repo *InMemoryUserRepository) Delete(ctx context.Context, userID value_object.UserID) error {
+func (repo *InMemoryUserRepository) Delete(ctx context.Context, userID value.UserID) error {
 	found := store[userID.Value()]
 	if found == nil {
 		return aerr.NewResourceNotFoundErr(fmt.Errorf("user not found. userID: %v", userID))
