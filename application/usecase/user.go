@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/trewanek/go-with-ddd-example/application/response"
-
 	"github.com/trewanek/go-with-ddd-example/application/adapter"
 	"github.com/trewanek/go-with-ddd-example/application/aerr"
+	"github.com/trewanek/go-with-ddd-example/application/response"
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
+	"github.com/trewanek/go-with-ddd-example/domain/value"
 )
 
 type RegisterUserUseCase struct {
@@ -34,7 +33,7 @@ func NewUserRegisterUseCase(
 }
 
 func (u *RegisterUserUseCase) Execute(ctx context.Context, name string) error {
-	user := u.userFactory.Create(value_object.NewUserName(name))
+	user := u.userFactory.Create(value.NewUserName(name))
 
 	exists, err := u.userService.Exists(ctx, user)
 	if err != nil {

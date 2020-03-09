@@ -4,7 +4,7 @@ import (
 	"strconv"
 
 	"github.com/trewanek/go-with-ddd-example/domain/entity"
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
+	"github.com/trewanek/go-with-ddd-example/domain/value"
 )
 
 type InMemoryUserFactory struct {
@@ -17,8 +17,8 @@ func NewInMemoryUserFactory() entity.IUserFactory {
 	}
 }
 
-func (factory *InMemoryUserFactory) Create(userName value_object.UserName) *entity.User {
+func (factory *InMemoryUserFactory) Create(userName value.UserName) *entity.User {
 	factory.seqID++
-	userID := value_object.NewUserID(strconv.Itoa(factory.seqID))
+	userID := value.NewUserID(strconv.Itoa(factory.seqID))
 	return entity.NewUser(userID, userName)
 }

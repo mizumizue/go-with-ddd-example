@@ -4,20 +4,16 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/trewanek/go-with-ddd-example/domain/value_object"
+	"github.com/trewanek/go-with-ddd-example/domain/value"
 )
 
 func TestUser_ChangeName(t *testing.T) {
-	uid := value_object.NewUserID("example1")
-	beforeName := value_object.NewUserName("trewanek")
-	afterName := value_object.NewUserName("changedName")
-
 	type fields struct {
-		userID   *value_object.UserID
-		userName *value_object.UserName
+		userID   value.UserID
+		userName value.UserName
 	}
 	type args struct {
-		name *value_object.UserName
+		name value.UserName
 	}
 	tests := []struct {
 		name    string
@@ -28,9 +24,17 @@ func TestUser_ChangeName(t *testing.T) {
 	}{
 		{
 			"",
-			fields{uid, beforeName},
-			args{name: afterName},
-			&User{uid, afterName},
+			fields{
+				userID:   value.NewUserID("hoge"),
+				userName: value.NewUserName("trewanek"),
+			},
+			args{
+				name: value.NewUserName("trewanek2"),
+			},
+			&User{
+				userID:   value.NewUserID("hoge"),
+				userName: value.NewUserName("trewanek2"),
+			},
 			false,
 		},
 	}
@@ -63,8 +67,6 @@ func TestUser_ChangeName(t *testing.T) {
 }
 
 func TestUser_Equals(t *testing.T) {
-	user1 := NewUser(value_object.NewUserName("trewanek"))
-	user2 := NewUser(value_object.NewUserName("trewanek"))
 	type fields struct {
 		user *User
 	}
@@ -79,15 +81,35 @@ func TestUser_Equals(t *testing.T) {
 	}{
 		{
 			"",
-			fields{user1},
-			args{user2},
-			false,
+			fields{
+				&User{
+					userID:   value.NewUserID("trewanekid"),
+					userName: value.NewUserName("trewanek"),
+				},
+			},
+			args{
+				&User{
+					userID:   value.NewUserID("trewanekid"),
+					userName: value.NewUserName("trewanek"),
+				},
+			},
+			true,
 		},
 		{
 			"",
-			fields{user1},
-			args{user1},
-			true,
+			fields{
+				&User{
+					userID:   value.NewUserID("trewanekid"),
+					userName: value.NewUserName("trewanek"),
+				},
+			},
+			args{
+				&User{
+					userID:   value.NewUserID("trewanekidhoge"),
+					userName: value.NewUserName("trewanek"),
+				},
+			},
+			false,
 		},
 	}
 	for _, tt := range tests {

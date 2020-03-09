@@ -1,4 +1,4 @@
-package value_object
+package value
 
 import (
 	"reflect"
@@ -14,7 +14,7 @@ func TestNewUserName(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *UserName
+		want    UserName
 		wantErr bool
 	}{
 		{
@@ -26,23 +26,22 @@ func TestNewUserName(t *testing.T) {
 		{
 			"",
 			args{"ho"},
-			nil,
+			UserName{},
 			true,
 		},
 		{
 			"",
 			args{"ほげ"},
-			nil,
+			UserName{},
 			true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := func() (got *UserName, err error) {
+			got, err := func() (got UserName, err error) {
 				defer func() {
 					e := recover()
 					if e != nil {
-						got = nil
 						err = e.(error)
 					}
 				}()
